@@ -1,11 +1,13 @@
-from index import db, bcrypt
+from . import db, bcrypt
 import uuid
 
 
 class User(db.Model):
     __bind_key__ = 'crate'
     __tablename__ = 'user'
-    id = db.Column(db.String, primary_key=True)
+    id = db.Column(db.String,
+                   default=lambda: str(uuid.uuid4()),
+                   primary_key=True)
     email = db.Column(db.String(255), unique=True)
     password = db.Column(db.String(255))
 

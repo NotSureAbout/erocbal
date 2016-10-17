@@ -11,7 +11,7 @@ import 'ag-grid-root/dist/styles/ag-grid.css';
 import 'ag-grid-root/dist/styles/theme-material.css';
 import io from 'socket.io-client'
 
-import MyPdfViewer from './PDFViewer.js';
+import Pdf from 'react-pdf-js';
 
 function mapStateToProps(state) {
     return {
@@ -136,7 +136,7 @@ export default class ProtectedView extends React.Component {
                                    />
                     </div>
                     <div>
-                      <MyPdfViewer file="http://localhost/_blobs/myblobs/ac3b4a6b91d122e1183ed3a6beb308140c9f1a40" onDocumentComplete={this.onDocumentComplete} onPageComplete={this.onPageComplete} />
+                      <Pdf file="http://localhost/_blobs/myblobs/ac3b4a6b91d122e1183ed3a6beb308140c9f1a40" onDocumentComplete={this.onDocumentComplete} onPageComplete={this.onPageComplete} />
                     </div>
                 </div>
             }

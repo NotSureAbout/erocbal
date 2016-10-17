@@ -1,31 +1,19 @@
-from flask import Blueprint, request, render_template, jsonify, url_for, redirect, g, json
-from .models import User
-from . import app, db
+from flask import request, jsonify, g
+from ..models import User
+from . import api
+from .. import db
 from sqlalchemy.exc import IntegrityError
-from .utils.auth import generate_token, requires_auth, verify_token
+from ..utils.auth import generate_token, requires_auth, verify_token
 import uuid
 
 
-main = Blueprint('main', __name__)
-
-
-@main.route('/', methods=['GET'])
-def index():
-    return render_template('index.html')
-
-
-@main.route('/<path:path>', methods=['GET'])
-def any_root_path(path):
-    return render_template('index.html')
-
-
-@main.route("/api/user", methods=["GET"])
+@api.route("/api/user", methods=["GET"])
 @requires_auth
 def get_user():
     return jsonify(result=g.current_user)
 
 
-@main.route("/api/create_user", methods=["POST"])
+@api.route("/api/create_user", methods=["POST"])
 def create_user():
     incoming = request.get_json()
     user = User(
@@ -50,7 +38,7 @@ def create_user():
     )
 
 
-@main.route("/api/get_token", methods=["POST"])
+@api.route("/api/get_token", methods=["POST"])
 def get_token():
     incoming = request.get_json()
     user = User.get_user_with_email_and_password(incoming["email"],
@@ -61,7 +49,7 @@ def get_token():
     return jsonify(error=True), 403
 
 
-@main.route("/api/is_token_valid", methods=["POST"])
+@api.route("/api/is_token_valid", methods=["POST"])
 def is_token_valid():
     incoming = request.get_json()
     is_valid = verify_token(incoming["token"])
