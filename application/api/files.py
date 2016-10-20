@@ -1,12 +1,9 @@
-from flask import request, jsonify, Response, g
+from flask import request, jsonify, Response
 from .. import db
 from .. import blob_container
 from ..models import Document
 from ..tasks import async
 from . import api
-from ..utils.misc import url_for
-from .auth import generate_token, requires_auth, verify_token
-from celery.contrib import rdb
 
 from tempfile import TemporaryFile
 
@@ -40,7 +37,6 @@ def upload_file():
 
         # Blob uploaded! Time to create a document
         file_url = build_url(file_id)
-        rdb.set_trace()
         doc = Document.create(file_id, file_url)
         db.session.merge(doc)
         db.session.commit()
