@@ -1,5 +1,6 @@
 from . import db, bcrypt
 import uuid
+from tika import parser
 
 
 class User(db.Model):
@@ -32,28 +33,38 @@ class User(db.Model):
 class Document(db.Model):
     __bind_key__ = 'crate'
     __tablename__ = 'blobsmeta'
-    doc_id = db.Column(db.String, primary_key=True)
-    digest = db.Column(db.String, primary_key=True)
+    file_id = db.Column(db.String, primary_key=True)
+    contents = db.Column(db.String)
     version = db.Column(db.Integer)
 
-    def __init__(self, doc_id, digest, version):
-        self.doc_id = doc_id
-        self.digest = digest
+    def __init__(self, file_id, contents, version=1):
+        self.file_id = file_id
+        self.contents = contents
         self.version = version
 
     def __repr__(self):
         return '<Document %r>' % self.digest
 
+    @staticmethod
+    def create(file_id, file_url):
+        """Create a new document. The data is obtained from Tika
+        """
+        file_data = parser.from_file(file_url, "http://localhost:9998")
+        doc = Document(file_id=file_id,
+                       contents=file_data.get('content', ),
+                       version=1)
+
+        return doc
+
     def serialize(self):
         return {
-            'doc_id': self.doc_id,
-            'digest': self.digest,
-            'version': self.version,
+            'file_id': self.file_id,
+            'version': self.version
         }
 
     @staticmethod
-    def get_all_documents_with_doc_id(doc_id):
-        documents = Document.query.filter_by(doc_id=doc_id).all()
+    def get_all_documents_with_doc_id(file_id):
+        documents = Document.query.filter_by(file_id=file_id).all()
         if documents:
             return documents
         else:

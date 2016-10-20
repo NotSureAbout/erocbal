@@ -87,6 +87,7 @@ def get_status(id):
     status code, it means that task hasn't finished yet. Else, the response
     from the task is returned.
     """
+    import pdb; pdb.set_trace()
     task = run_flask_request.AsyncResult(id)
     if task.state == states.PENDING:
         abort(404)

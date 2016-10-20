@@ -1,6 +1,7 @@
 from flask_testing import TestCase
-from application.app import app, db
+from application import create_app as _create_app
 from application.models import User
+from application import db
 import os
 from setup import basedir
 import json
@@ -13,7 +14,7 @@ class BaseTestConfig(TestCase):
     }
 
     def create_app(self):
-        app.config.from_object('config.TestingConfig')
+        app = _create_app('testing')
         return app
 
     def setUp(self):

@@ -1,12 +1,14 @@
+from flask_script import Manager, Command, Server as _Server, Option
+from application import create_app, socketio
+from flask import url_for
+
 import os
 import subprocess
 import sys
+import pprint
 
 import eventlet
 eventlet.monkey_patch()
-
-from flask_script import Manager, Command, Server as _Server, Option
-from application import create_app, socketio
 
 manager = Manager(create_app)
 
@@ -66,6 +68,7 @@ class Server(_Server):
                      use_reloader=use_reloader,
                      **self.server_options)
 
+
 manager.add_command("runserver", Server())
 
 
@@ -75,8 +78,9 @@ class CeleryWorker(Command):
     capture_all_args = True
 
     def run(self, argv):
+        import pdb; pdb.set_trace()
         ret = subprocess.call(
-            ['celery', 'worker', '-A', 'labcore.celery'] + argv)
+            ['celery', 'worker', '-A', 'application.celery'] + argv)
         sys.exit(ret)
 
 manager.add_command("celery", CeleryWorker())

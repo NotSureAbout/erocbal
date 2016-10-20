@@ -6,6 +6,7 @@ from flask_bootstrap import Bootstrap
 from flask_socketio import SocketIO
 from flask_bcrypt import Bcrypt
 from celery import Celery
+from crate import client
 
 from config import config
 
@@ -14,6 +15,9 @@ db = SQLAlchemy()
 bootstrap = Bootstrap()
 socketio = SocketIO()
 bcrypt = Bcrypt()
+
+blob_conn = client.connect()
+blob_container = blob_conn.get_blob_container('myblobs')
 
 celery = Celery(__name__,
                 broker=os.environ.get('CELERY_BROKER_URL', 'redis://'),

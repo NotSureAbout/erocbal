@@ -1,7 +1,8 @@
 from testing_config import BaseTestConfig
 from application.models import User
 import json
-from application.utils import auth
+from application.api import auth
+from application import db
 
 
 class TestAPI(BaseTestConfig):
@@ -16,13 +17,13 @@ class TestAPI(BaseTestConfig):
 
     def test_create_new_user(self):
         self.assertIsNone(User.query.filter_by(
-                email=self.some_user["email"]
+            email=self.some_user["email"]
         ).first())
 
         res = self.app.post(
-                "/api/create_user",
-                data=json.dumps(self.some_user),
-                content_type='application/json'
+            "/api/create_user",
+            data=json.dumps(self.some_user),
+            content_type='application/json'
         )
         self.assertEqual(res.status_code, 200)
         self.assertTrue(json.loads(res.data.decode("utf-8"))["token"])

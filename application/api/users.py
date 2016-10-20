@@ -3,17 +3,17 @@ from ..models import User
 from . import api
 from .. import db
 from sqlalchemy.exc import IntegrityError
-from ..utils.auth import generate_token, requires_auth, verify_token
+from .auth import generate_token, requires_auth, verify_token
 import uuid
 
 
-@api.route("/api/user", methods=["GET"])
+@api.route("/user", methods=["GET"])
 @requires_auth
 def get_user():
     return jsonify(result=g.current_user)
 
 
-@api.route("/api/create_user", methods=["POST"])
+@api.route("/create_user", methods=["POST"])
 def create_user():
     incoming = request.get_json()
     user = User(
@@ -30,15 +30,13 @@ def create_user():
 
     new_user = db.session.query(User).filter_by(id=user.id).first()
 
-    print(new_user)
-
     return jsonify(
         id=user.id,
         token=generate_token(new_user)
     )
 
 
-@api.route("/api/get_token", methods=["POST"])
+@api.route("/get_token", methods=["POST"])
 def get_token():
     incoming = request.get_json()
     user = User.get_user_with_email_and_password(incoming["email"],
@@ -49,7 +47,7 @@ def get_token():
     return jsonify(error=True), 403
 
 
-@api.route("/api/is_token_valid", methods=["POST"])
+@api.route("/is_token_valid", methods=["POST"])
 def is_token_valid():
     incoming = request.get_json()
     is_valid = verify_token(incoming["token"])
