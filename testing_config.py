@@ -14,13 +14,19 @@ class BaseTestConfig(TestCase):
     }
 
     def create_app(self):
-        app = _create_app('testing')
-        return app
+        self.app = _create_app('testing')
+        return self.app
 
     def setUp(self):
-        self.app = self.create_app().test_client()
+
         db.create_all()
-        res = self.app.post(
+        self.ctx = self.app.app_context()
+        self.ctx.push()
+        db.drop_all()  # just in case
+        db.create_all()
+        self.client = self.app.test_client()
+
+        res = self.client.post(
                 "/api/create_user",
                 data=json.dumps(self.default_user),
                 content_type='application/json'

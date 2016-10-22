@@ -25,10 +25,13 @@ class ProductionConfig(Config):
 
 class TestingConfig(Config):
     TESTING = True
-    SQLALCHEMY_BINDS = {'crate': 'crate://'}
+    SQLALCHEMY_BINDS = {'crate': 'sqlite:///:memory:'}
     CELERY_CONFIG = {'CELERY_ALWAYS_EAGER': True}
     SOCKETIO_MESSAGE_QUEUE = None
-
+    DEBUG = True
+    WTF_CSRF_ENABLED = False
+    DEBUG_TB_ENABLED = True
+    PRESERVE_CONTEXT_ON_EXCEPTION = False
 
 config = {
     'development': DevelopmentConfig,
