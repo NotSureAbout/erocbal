@@ -15,7 +15,7 @@ class User(db.Model):
     def __init__(self, email, password, id):
         self.id = id
         self.email = email
-        self.password = User.hashed_password(password).decode('utf-8')
+        self.password = User.hashed_password(password)
 
     @staticmethod
     def hashed_password(password):
