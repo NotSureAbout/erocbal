@@ -1,10 +1,11 @@
-import { RECEIVE_PROTECTED_DATA, FETCH_PROTECTED_DATA_REQUEST } from '../constants';
+import { RECEIVE_PROTECTED_DATA, FETCH_PROTECTED_DATA_REQUEST, CONNECTED, DISCONNECTED } from '../constants';
 import { createReducer } from '../utils/misc';
 
 const initialState = {
     data: null,
     isFetching: false,
     loaded: false,
+    isConnected: false,
 };
 
 export default createReducer(initialState, {
@@ -18,4 +19,12 @@ export default createReducer(initialState, {
         Object.assign({}, state, {
             isFetching: true,
         }),
+    [CONNECTED]: (state) =>
+        Object.assign({}, state, {
+            isConnected: true,
+        }),
+        [CONNECTED]: (state) =>
+            Object.assign({}, state, {
+                isConnected: false,
+            })
 });

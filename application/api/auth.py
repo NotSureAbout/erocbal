@@ -35,6 +35,7 @@ def requires_auth(f):
                 g.current_user = user
                 return f(*args, **kwargs)
 
-        return jsonify(message="Authentication is required to access this resource"), 401
+        return jsonify(
+            message="Authentication is required to access this resource"), 401
 
     return decorated

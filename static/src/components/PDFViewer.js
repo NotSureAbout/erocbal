@@ -52,7 +52,7 @@ class MyPdfViewer extends React.Component {
     }
     return (
       <div>
-        <Pdf file="http://127.0.0.1:4200/_blobs/myblobs/ac3b4a6b91d122e1183ed3a6beb308140c9f1a40" onDocumentComplete={this.onDocumentComplete} onPageComplete={this.onPageComplete} page='1' />
+
         {pagination}
       </div>)
   }

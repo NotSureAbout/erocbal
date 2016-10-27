@@ -1,11 +1,8 @@
 from flask_script import Manager, Command, Server as _Server, Option
 from application import create_app, socketio
-from flask import url_for
 
-import os
 import subprocess
 import sys
-import pprint
 
 import eventlet
 eventlet.monkey_patch()
@@ -78,7 +75,6 @@ class CeleryWorker(Command):
     capture_all_args = True
 
     def run(self, argv):
-        import pdb; pdb.set_trace()
         ret = subprocess.call(
             ['celery', 'worker', '-A', 'application.celery'] + argv)
         sys.exit(ret)

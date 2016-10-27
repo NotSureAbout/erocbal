@@ -97,9 +97,16 @@ export default class ProtectedView extends React.Component {
       socket.on('status', (msg) => {
         this.setState({rowData: JSON.parse(msg.data)});
       });
+      socket.on('new document', (msg) => {
+        this.api.addItems(JSON.parse(msg.data))
+      });
   }
 
-
+  // in onGridReady, store the api for later use
+  onGridReady(params) {
+      this.api = params.api;
+      this.columnApi = params.columnApi;
+  }
 
   fetchData() {
       const token = this.props.token;
@@ -133,6 +140,7 @@ export default class ProtectedView extends React.Component {
                                    rowHeight={this.state.rowHeight}
                                    quickFilterText={this.state.quickFilterText}
                                    rowSelection= "multiple"
+                                   onGridReady={this.onGridReady.bind(this)}
                                    />
                     </div>
                     <div>
