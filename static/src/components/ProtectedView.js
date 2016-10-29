@@ -50,30 +50,6 @@ export default class ProtectedView extends React.Component {
     };
   }
 
-  // createColumnNames() {
-  //   // creates column names by iterating the alphabet twice, eg {'aa','ab','ac',.....'zz'}
-  //   var alphabet = 'abcde'.split('');
-  //   this.columnNames = [];
-  //   alphabet.forEach( letter1 => {
-  //       alphabet.forEach( letter2 => {
-  //           this.columnNames.push(letter1 + letter2);
-  //       });
-  //   });
-  // }
-
-  // createRowData() {
-  //   var rowData = [];
-  //
-  //   for (var i = 0; i<10; i++) {
-  //       var item = {};
-  //       this.columnNames.forEach( colName => {
-  //           item[colName] = '('+colName.toUpperCase()+','+i+')'
-  //       });
-  //       rowData.push(item);
-  //   }
-  //
-  //   return rowData;
-  // }
 
   createColumnDefs() {
 
@@ -89,20 +65,18 @@ export default class ProtectedView extends React.Component {
   componentDidMount() {
       // Data should be fetched in a reducer
       this.fetchData();
-      var namespace ="/test"
-      var socket = io.connect('http://localhost:5000/');
-      socket.on('connect', function(){
-        socket.emit('my_event', {data: 'I\'m connected!'});
-      });
-      socket.on('status', (msg) => {
-        this.setState({rowData: JSON.parse(msg.data)});
-      });
-      socket.on('new document', (msg) => {
-        this.api.addItems(JSON.parse(msg.data))
-      });
+      // var namespace ="/test"
+      // var socket = io.connect('http://localhost:5000/');
+      //
+      // socket.on('status', (msg) => {
+      //   this.setState({rowData: JSON.parse(msg.data)});
+      // });
+      // socket.on('new document', (msg) => {
+      //   this.api.addItems(JSON.parse(msg.data))
+      // });
   }
 
-  // in onGridReady, store the api for later use
+  // onGridReady, store the api for later use
   onGridReady(params) {
       this.api = params.api;
       this.columnApi = params.columnApi;
@@ -142,9 +116,6 @@ export default class ProtectedView extends React.Component {
                                    rowSelection= "multiple"
                                    onGridReady={this.onGridReady.bind(this)}
                                    />
-                    </div>
-                    <div>
-                      <Pdf file="http://localhost/_blobs/myblobs/ac3b4a6b91d122e1183ed3a6beb308140c9f1a40" onDocumentComplete={this.onDocumentComplete} onPageComplete={this.onPageComplete} />
                     </div>
                 </div>
             }
