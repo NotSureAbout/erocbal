@@ -1,11 +1,12 @@
 import { createStore, applyMiddleware, compose } from 'redux';
-import socketIO from 'socket.io-client';
 import thunkMiddleware from 'redux-thunk';
-import socketMiddleware from '../socketMiddleware'
+import Resocket, { createResocketMiddleware } from 'resocket';
 import rootReducer from '../reducers';
 
 const debugware = [];
-const io = socketIO.connect(`http://localhost:5000`);
+const listOfEventsToEmitTo = ['action']
+const socket = Resocket.connect('http://localhost:5000', {auth: true});
+const resocketMiddleware = createResocketMiddleware(socket, listOfEventsToEmitTo);
 
 if (process.env.NODE_ENV !== 'production') {
     const createLogger = require('redux-logger');
@@ -20,7 +21,7 @@ export default function configureStore(initialState) {
         rootReducer,
         initialState,
         compose(
-          applyMiddleware(thunkMiddleware,  socketMiddleware(io), ...debugware),
+          applyMiddleware(thunkMiddleware,  resocketMiddleware, ...debugware),
           window.devToolsExtension ? window.devToolsExtension() : f => f
         )
   );
@@ -32,7 +33,6 @@ export default function configureStore(initialState) {
 
             store.replaceReducer(nextRootReducer);
         });
-    }
-
     return store;
+    }
 }

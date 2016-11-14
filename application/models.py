@@ -9,7 +9,7 @@ class User(db.Model):
     id = db.Column(db.String,
                    default=lambda: str(uuid.uuid4()),
                    primary_key=True)
-    email = db.Column(db.String(255), primary_key=True)
+    email = db.Column(db.String(255), unique=True)
     password = db.Column(db.String(255))
 
     def __init__(self, email, password, id):

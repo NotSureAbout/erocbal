@@ -119,5 +119,7 @@
     "webpack-merge": "^0.14.1",
     "yargs": "^5.0.0"
   },
-  "dependencies": {}
+  "dependencies": {
+    "resocket": "^1.1.3"
+  }
 }

@@ -1,7 +1,6 @@
 import React from 'react';
 import { connect } from 'react-redux';
-import { bindActionCreators } from 'redux';
-import * as actionCreators from '../actions/data';
+import * as actions from '../actions/data';
 
 import TextField from 'material-ui/TextField';
 import {AgGridReact} from 'ag-grid-react';
@@ -19,13 +18,16 @@ function mapStateToProps(state) {
         token: state.auth.token,
         loaded: state.data.loaded,
         isFetching: state.data.isFetching,
+        documents: state.data.documents,
+        isConnected: state.data.isConnected,
+
     };
 }
 
 
-function mapDispatchToProps(dispatch) {
-    return bindActionCreators(actionCreators, dispatch);
-}
+const mapDispatchToProps = dispatch => ({
+  fetchProtectedData: token => dispatch(actions.fetchProtectedData(token)),
+});
 
 // React cellRenderer Component
 class NameCellRenderer extends React.Component {
@@ -41,8 +43,8 @@ export default class ProtectedView extends React.Component {
     super();
 
     this.state = {
-        columnDefs: this.createColumnDefs(),
         rowData: [],
+        columnDefs: this.createColumnDefs(),
         enableFilter: true,
         rowHeight: 48,
         quickFilterText: null,
@@ -54,28 +56,28 @@ export default class ProtectedView extends React.Component {
   createColumnDefs() {
 
       var columnDefs = [
-        {headerName: "Title", field: "digest", checkboxSelection: true},
-        {headerName: "Version", field: "version", cellRendererFramework: NameCellRenderer},
-        {headerName: "Read", field: "doc_id"}
+        {headerName: "Title", field: "file_id", checkboxSelection: true},
+        {headerName: "Versions", field: "version",
+         cellRendererFramework: NameCellRenderer}
       ];
 
       return columnDefs;
   }
 
-  componentDidMount() {
-      // Data should be fetched in a reducer
-      this.fetchData();
-      // var namespace ="/test"
-      // var socket = io.connect('http://localhost:5000/');
-      //
-      // socket.on('status', (msg) => {
-      //   this.setState({rowData: JSON.parse(msg.data)});
-      // });
-      // socket.on('new document', (msg) => {
-      //   this.api.addItems(JSON.parse(msg.data))
-      // });
+  componentWillMount() {
+    // this.props.addListenersTo(['UPDATE_DOCUMENTS', 'ADD_DOCUMENT', 'action' ]);
+
+    this.setState({rowData: this.props.documents});
   }
 
+  componentDidMount() {
+      this.fetchData();
+
+  }
+
+  componentWillUnmount() {
+    console.log("Unmounting like a boss")
+  }
   // onGridReady, store the api for later use
   onGridReady(params) {
       this.api = params.api;
@@ -126,8 +128,11 @@ export default class ProtectedView extends React.Component {
 
 ProtectedView.propTypes = {
     fetchProtectedData: React.PropTypes.func,
+    addListenersTo: React.PropTypes.func,
+    addDocuments: React.PropTypes.func,
     loaded: React.PropTypes.bool,
     userName: React.PropTypes.string,
     data: React.PropTypes.any,
     token: React.PropTypes.string,
+    documents: React.PropTypes.any
 };

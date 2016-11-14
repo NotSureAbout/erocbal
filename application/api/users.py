@@ -28,8 +28,8 @@ def create_user():
     except IntegrityError:
         return jsonify(message="User with that email already exists"), 409
 
-    new_user = db.session.query(User).filter_by(id=user.id).first()
-
+    new_user = db.session.query(User).filter_by(id=user.id, email=user.email).first()
+    print(new_user)
     return jsonify(
         id=user.id,
         token=generate_token(new_user)

@@ -2,6 +2,8 @@ from functools import wraps
 from flask import request, g, jsonify, current_app
 from itsdangerous import TimedJSONWebSignatureSerializer as Serializer
 from itsdangerous import SignatureExpired, BadSignature
+from .. import socketio
+from flask_socketio import disconnect
 
 TWO_WEEKS = 1209600
 
@@ -39,3 +41,8 @@ def requires_auth(f):
             message="Authentication is required to access this resource"), 401
 
     return decorated
+
+
+@socketio.on('connect')
+def connect_handler():
+    pass

@@ -1,10 +1,11 @@
-from flask import request, jsonify, Response
+from flask import request, jsonify, Response, g
 from .. import db
 from .. import blob_container
 from ..events import push_new_document
 from ..models import Document
 from ..tasks import async
 from . import api
+from .auth import requires_auth
 
 from tempfile import TemporaryFile
 import hashlib
@@ -47,6 +48,19 @@ def upload_file():
     push_new_document(doc)
 
     return jsonify(message="Document created."), 201
+
+
+@api.route('/files', methods=['GET'])
+@requires_auth
+def get_files():
+    """
+    Return the metadata for the files assigned to the user
+    """
+    print(g.current_user)
+
+    files = Document.get_all_documents()
+    print(jsonify(files))
+    return jsonify(files), 200
 
 
 @api.route('/files/<id>', methods=['GET'])

@@ -83,6 +83,8 @@ class TestAPI(BaseTestConfig):
 
         response = self.client.get('/api/user', headers=headers)
         self.assertEqual(response.status_code, 200)
+        response = self.client.get('/api/user', headers=headers)
+        self.assertEqual(response.status_code, 200)
         response2 = self.client.get('/api/user')
         self.assertEqual(response2.status_code, 401)
         response3 = self.client.get('/api/user', headers=bad_headers)

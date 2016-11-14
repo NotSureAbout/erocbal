@@ -1,4 +1,10 @@
-import { RECEIVE_PROTECTED_DATA, FETCH_PROTECTED_DATA_REQUEST, CONNECTED, DISCONNECTED } from '../constants';
+import { RECEIVE_PROTECTED_DATA,
+  FETCH_PROTECTED_DATA_REQUEST,
+  CONNECTED, DISCONNECTED,
+  ADD_DOCUMENT,
+  UPDATE_DOCUMENTS,
+  RECEIVE_DOCUMENTS
+} from '../constants';
 import { createReducer } from '../utils/misc';
 
 const initialState = {
@@ -6,6 +12,7 @@ const initialState = {
     isFetching: false,
     loaded: false,
     isConnected: false,
+    documents: null
 };
 
 export default createReducer(initialState, {
@@ -23,8 +30,17 @@ export default createReducer(initialState, {
         Object.assign({}, state, {
             isConnected: true,
         }),
-        [CONNECTED]: (state) =>
-            Object.assign({}, state, {
-                isConnected: false,
-            })
+    [DISCONNECTED]: (state) =>
+        Object.assign({}, state, {
+            isConnected: false,
+        }),
+    [RECEIVE_DOCUMENTS]: (state, payload) =>
+        Object.assign({}, state, {
+            documents: payload.data,
+       }),
+    [ADD_DOCUMENT]: (state, payload) =>
+        Object.assign({}, state, {
+            documents: payload,
+      }),
+
 });
