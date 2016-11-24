@@ -38,16 +38,6 @@ export function connectSocketio(token) {
 
 export function addDocument(payload) {
   return dispatch => {
-    Resocket.on('action', document => {
-      dispatch(actions.addDocument(document))
-    });
+      dispatch(actions.addDocument(payload))
+    };
   }
-}
-
-export function updateDocuments(payload) {
-  return dispatch => {
-    Resocket.on('action', documents => {
-      dispatch(actions.updateDocuments(documents))
-    });
-  }
-}

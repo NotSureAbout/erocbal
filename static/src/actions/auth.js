@@ -8,6 +8,7 @@ import {
     REGISTER_USER_FAILURE,
     REGISTER_USER_REQUEST,
     REGISTER_USER_SUCCESS,
+    CLEAR_STATE,
 } from '../constants/index';
 
 import { parseJSON } from '../utils/misc';
@@ -42,6 +43,12 @@ export function loginUserRequest() {
     };
 }
 
+export function clearState() {
+    return {
+        type: CLEAR_STATE,
+    };
+}
+
 export function logout() {
     localStorage.removeItem('token');
     return {
@@ -52,6 +59,7 @@ export function logout() {
 export function logoutAndRedirect() {
     return (dispatch) => {
         dispatch(logout());
+        dispatch(clearState());
         browserHistory.push('/');
     };
 }

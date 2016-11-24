@@ -57,9 +57,7 @@ def get_files():
     Return the metadata for the files assigned to the user
     """
     print(g.current_user)
-
     files = Document.get_all_documents()
-    print(jsonify(files))
     return jsonify(files), 200
 
 

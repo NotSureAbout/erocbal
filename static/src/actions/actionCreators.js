@@ -48,14 +48,7 @@ export function receiveDocuments(data) {
 
 export function addDocument(payload) {
   return {
-    type: ADD_DOCUMENT,
-    payload,
-  };
-}
-
-export function updateDocuments(payload) {
-  return {
-    type: UPDATE_DOCUMENTS,
-    payload,
+      type: ADD_DOCUMENT,
+      payload,
   };
 }

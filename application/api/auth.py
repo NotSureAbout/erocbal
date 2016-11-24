@@ -43,6 +43,12 @@ def requires_auth(f):
     return decorated
 
 
-@socketio.on('connect')
+@socketio.on('action')
 def connect_handler():
     pass
+
+
+@socketio.on('action')
+@requires_auth
+def hallo_handler():
+    print("Hey Ho, Lets go!")

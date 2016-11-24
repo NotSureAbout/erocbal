@@ -21,3 +21,4 @@ export const CONNECT = 'CONNECT';
 
 
 export const RECEIVE_DOCUMENTS = 'RECEIVE_DOCUMENTS';
+export const CLEAR_STATE = 'CLEAR_STATE';

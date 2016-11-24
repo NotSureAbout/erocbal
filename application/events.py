@@ -7,4 +7,4 @@ def push_new_document(document):
     """Push new document to all connected Socket.IO clients."""
     socketio.emit('action',
                   {'type': 'ADD_DOCUMENT',
-                   'data': document.serialize()})
+                   'payload': document.serialize()})

@@ -6,13 +6,14 @@ import { RECEIVE_PROTECTED_DATA,
   RECEIVE_DOCUMENTS
 } from '../constants';
 import { createReducer } from '../utils/misc';
+import merge from 'lodash.merge';
 
 const initialState = {
     data: null,
     isFetching: false,
     loaded: false,
     isConnected: false,
-    documents: null
+    documents: []
 };
 
 export default createReducer(initialState, {
@@ -39,8 +40,17 @@ export default createReducer(initialState, {
             documents: payload.data,
        }),
     [ADD_DOCUMENT]: (state, payload) =>
-        Object.assign({}, state, {
-            documents: payload,
-      }),
-
+        updateDocuments(state, payload)
 });
+
+function updateDocuments(state, payload) {
+
+    console.log(state.documents)
+    let arr = [payload]
+    console.log(arr)
+
+    return {
+      ... state,
+          documents: [...state.documents || [], payload],
+    };
+}
