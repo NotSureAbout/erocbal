@@ -44,11 +44,6 @@ export default createReducer(initialState, {
 });
 
 function updateDocuments(state, payload) {
-
-    console.log(state.documents)
-    let arr = [payload]
-    console.log(arr)
-
     return {
       ... state,
           documents: [...state.documents || [], payload],
